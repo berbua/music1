@@ -1,68 +1,127 @@
-var song;
-var sliderVolume;
-var sliderRate;
-var sliderPan;
-var button;
-var jumpButton;
-var amp;
-var volHistory = [];
+var s1 = function(sketch) {
+  var width = 300;
+  var height = 300;
+  var canvas1;
+  var song;
+  var sliderVolume;
+  var sliderRate;
+  var sliderPan;
+  var button;
+  var amp;
+  var volHistory = [];
 
-function setup() {
-  createCanvas(300, 300);
-  sliderVolume = createSlider(0, 1, 0.5, 0.01);
-  sliderRate = createSlider(0.5, 1, 0.75, 0.01);
-  sliderPan = createSlider(-1, 1, 1, 0.01);
-  song = loadSound('charlotte.mp3', loaded);
-  amp = new p5.Amplitude();
-}
+  sketch.setup = function() {
+    canvas1 = sketch.createCanvas(width, height);
+    sliderVolume = sketch.createSlider(0, 1, 0.5, 0.01);
+    sliderRate = sketch.createSlider(0.5, 1, 0.75, 0.01);
+    sliderPan = sketch.createSlider(-1, 1, 1, 0.01);
+    song = sketch.loadSound('charlotte.mp3', loaded);
+    amp = new p5.Amplitude();
+  };
 
-function loaded() {
-  console.log('loaded');
-  button = createButton('Play');
-  button.mousePressed(togglePlaying);
-  jumpButton = createButton('Jump');
-  jumpButton.mousePressed(jumpSong);
-}
+  //visualiser
 
-function togglePlaying() {
-  if (!song.isPlaying()) {
-    song.play();
-    song.setVolume(0.3);
-    button.html('Pause');
-  } else {
-    song.pause();
-    button.html('Play');
-  }
-}
-
-function jumpSong() {
-  var len = song.duration();
-  var t = 0; // random(len);
-  song.jump(t);
-}
-
-function draw() {
-  background(51);
-  var vol = amp.getLevel();
-  volHistory.push(vol);
-  stroke(255);
-  noFill();
-  beginShape();
-  for (var i = 0; i < volHistory.length; i++) {
-    var y = map(volHistory[i], 0, 1, 300 / 2, 0);
-    vertex(i, y);
-  }
-  endShape();
-
-  if (volHistory.length > 300 - 50) {
-    volHistory.splice(0, 1);
+  function loaded() {
+    console.log('loaded');
+    button = sketch.createButton('Play');
+    button.mousePressed(togglePlaying);
   }
 
-  stroke(255, 0, 0);
-  line(volHistory.length, 0, volHistory.length, 300);
+  function togglePlaying() {
+    if (!song.isPlaying()) {
+      song.play();
+      song.setVolume(0.3);
+      button.html('Pause');
+    } else {
+      song.pause();
+      button.html('Play');
+    }
+  }
 
-  // sliders
-  song.setVolume(sliderVolume.value());
-  song.pan(sliderRate.value());
-  song.rate(sliderPan.value());
-}
+  sketch.draw = function() {
+    sketch.background(51);
+    var vol = amp.getLevel();
+    volHistory.push(vol);
+    sketch.stroke(255);
+    sketch.noFill();
+    sketch.beginShape();
+    for (var i = 0; i < volHistory.length; i++) {
+      var y = sketch.map(volHistory[i], 0, 1, 300 / 2, 0);
+      sketch.vertex(i, y);
+    }
+    sketch.endShape();
+
+    if (volHistory.length > 300 - 50) {
+      volHistory.splice(0, 1);
+    }
+
+    sketch.stroke(255, 0, 0);
+    sketch.line(volHistory.length, 0, volHistory.length, 300);
+
+    // sliders
+    song.setVolume(sliderVolume.value());
+    song.pan(sliderRate.value());
+    song.rate(sliderPan.value());
+  };
+};
+
+var myp1 = new p5(s1, 'visualiser');
+
+//
+// dots
+//
+
+var s2 = function(sketch) {
+  var width = 300;
+  var height = 300;
+  var canvas1;
+  var song;
+  var sliderVolume;
+  var sliderRate;
+  var sliderPan;
+  var button;
+  var amp;
+  var volHistory = [];
+
+  sketch.setup = function() {
+    canvas1 = sketch.createCanvas(width, height);
+    sliderVolume = sketch.createSlider(0, 1, 0.5, 0.01);
+    sliderRate = sketch.createSlider(0.5, 1, 0.75, 0.01);
+    sliderPan = sketch.createSlider(-1, 1, 1, 0.01);
+    song = sketch.loadSound('charlotte.mp3', loaded);
+    amp = new p5.Amplitude();
+  };
+
+  function loaded() {
+    console.log('loaded');
+    button = sketch.createButton('Play');
+    button.mousePressed(togglePlaying);
+  }
+
+  function togglePlaying() {
+    if (!song.isPlaying()) {
+      song.play();
+      song.setVolume(0.3);
+      button.html('Pause');
+    } else {
+      song.pause();
+      button.html('Play');
+    }
+  }
+
+  sketch.draw = function() {
+    sketch.background(51);
+    var vol = amp.getLevel();
+    var vol = amp.getLevel();
+    var diam = sketch.map(vol, 0, 0.3, 10, 200);
+    sketch.fill(100, 15, 100);
+    sketch.ellipse(300 / 2, 300 / 2, diam, diam);
+
+    // sliders
+    song.setVolume(sliderVolume.value());
+    song.pan(sliderRate.value());
+    song.rate(sliderPan.value());
+  };
+};
+
+var myp2 = new p5(s2, 'dots');
