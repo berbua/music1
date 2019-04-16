@@ -6,6 +6,7 @@ body {
 }
 
 canvas {
+  margin-top: 2rem;
   padding: 2rem;
   border: 1px solid #f0f0f0;
 }
