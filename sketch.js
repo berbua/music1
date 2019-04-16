@@ -5,6 +5,7 @@ var sliderPan;
 var button;
 var jumpButton;
 var amp;
+var volHistory = [];
 
 function setup() {
   createCanvas(300, 300);
@@ -43,9 +44,22 @@ function jumpSong() {
 function draw() {
   background(51);
   var vol = amp.getLevel();
-  var diam = map(vol, 0, 0.3, 10, 200);
-  fill(100, 15, 100);
-  ellipse(300 / 2, 300 / 2, diam, diam);
+  volHistory.push(vol);
+  stroke(255);
+  noFill();
+  beginShape();
+  for (var i = 0; i < volHistory.length; i++) {
+    var y = map(volHistory[i], 0, 1, 300 / 2, 0);
+    vertex(i, y);
+  }
+  endShape();
+
+  if (volHistory.length > 300 - 50) {
+    volHistory.splice(0, 1);
+  }
+
+  stroke(255, 0, 0);
+  line(volHistory.length, 0, volHistory.length, 300);
 
   // sliders
   song.setVolume(sliderVolume.value());
